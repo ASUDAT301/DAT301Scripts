@@ -1,0 +1,1 @@
+az group create --name dat301 --location westus2

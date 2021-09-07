@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_DAT301_windows_name": {
+            "value": null
+        },
+        "disks_DAT301_windows_OsDisk_1_cee0bd89a5f740bc86e44a7885033cda_externalid": {
+            "value": null
+        },
+        "networkInterfaces_dat301_windows395_externalid": {
+            "value": null
+        }
+    }
+}

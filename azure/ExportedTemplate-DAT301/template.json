@@ -1,0 +1,86 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_DAT301_windows_name": {
+            "defaultValue": "DAT301-windows",
+            "type": "String"
+        },
+        "disks_DAT301_windows_OsDisk_1_cee0bd89a5f740bc86e44a7885033cda_externalid": {
+            "defaultValue": "/subscriptions/61ace2e6-52f5-41b3-b3cf-3aebd241b397/resourceGroups/DAT301/providers/Microsoft.Compute/disks/DAT301-windows_OsDisk_1_cee0bd89a5f740bc86e44a7885033cda",
+            "type": "String"
+        },
+        "networkInterfaces_dat301_windows395_externalid": {
+            "defaultValue": "/subscriptions/61ace2e6-52f5-41b3-b3cf-3aebd241b397/resourceGroups/DAT301/providers/Microsoft.Network/networkInterfaces/dat301-windows395",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('virtualMachines_DAT301_windows_name')]",
+            "location": "westus2",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsDesktop",
+                        "offer": "Windows-10",
+                        "sku": "20h2-pro-g2",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_DAT301_windows_name'), '_OsDisk_1_cee0bd89a5f740bc86e44a7885033cda')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_DAT301_windows_OsDisk_1_cee0bd89a5f740bc86e44a7885033cda_externalid')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_DAT301_windows_name')]",
+                    "adminUsername": "DAT301",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true,
+                        "patchSettings": {
+                            "patchMode": "AutomaticByOS",
+                            "assessmentMode": "ImageDefault",
+                            "enableHotpatching": false
+                        }
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_dat301_windows395_externalid')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                },
+                "licenseType": "Windows_Client",
+                "priority": "Spot",
+                "evictionPolicy": "Deallocate",
+                "billingProfile": {
+                    "maxPrice": -1
+                }
+            }
+        }
+    ]
+}
